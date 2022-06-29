@@ -1,4 +1,4 @@
-package com.protalento.interfaces;
+package com.protalento.excepciones;
 
 import com.protalento.enumerados.ErroresPatrones;
 

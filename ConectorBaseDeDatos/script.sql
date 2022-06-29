@@ -6,7 +6,9 @@ create table if not exists usuarios(
 	correo varchar(100) not null primary key,
 	clave blob,-- poder encriptar la informacion 
 	fechaCreacion date not null,
-	fechaUltimoAcceso datetime not null
+	fechaUltimoAcceso datetime not null,
+	-- se agrega para bloquear el usuario
+	intentosFallidos tinyint not null default 0
 ); 
 
 create table if not exists categorias(

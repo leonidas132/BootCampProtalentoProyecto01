@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.protalento.enumerados.ErroresPatrones;
-import com.protalento.interfaces.PatronExcepcion;
+import com.protalento.excepciones.PatronExcepcion;
 
 public final class Patrones {
 	private Patrones() {
