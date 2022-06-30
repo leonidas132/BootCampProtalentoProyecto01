@@ -8,6 +8,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.protalento.entidades.Usuario;
 import com.protalento.excepciones.PatronExcepcion;
 import com.protalento.jdbc.AdministradorDeConexionMariaDB;
@@ -17,6 +20,7 @@ import com.protalento.utilidades.Fechas;
 // SOLID
 public class UsuarioImp implements IUsuario {
 
+	private static Logger logger = LogManager.getLogger();
 	private PreparedStatement preparedStatementBuscarPorID;
 	private PreparedStatement preparedStatementInsertar;
 	private PreparedStatement preparedStatementEliminar;
@@ -54,8 +58,12 @@ public class UsuarioImp implements IUsuario {
 				usuario.setIntentosFallidos(resultSet.getByte("intentosFallidos"));
 			}
 
+			logger.debug(preparedStatementBuscarPorID);
+
+			logger.info(usuario);
+
 		} catch (SQLException | PatronExcepcion e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 
 		return usuario;
@@ -67,6 +75,7 @@ public class UsuarioImp implements IUsuario {
 		try {
 			if (null == preparedStatementInsertar) {
 				preparedStatementInsertar = administradorDeConexionMariaDB.getConexion().prepareStatement(sql);
+
 			}
 			preparedStatementInsertar.setString(1, usuario.getCorreo());
 			preparedStatementInsertar.setString(2, usuario.getClave());
@@ -74,10 +83,13 @@ public class UsuarioImp implements IUsuario {
 			preparedStatementInsertar.setString(4, Fechas.getString(LocalDate.now()));
 			preparedStatementInsertar.setString(5, Fechas.getString(LocalDateTime.now()));
 
+			logger.debug(preparedStatementInsertar);
+			logger.info(usuario);
+
 			return preparedStatementInsertar.executeUpdate() == 1;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 		return false;
 	}
@@ -93,10 +105,12 @@ public class UsuarioImp implements IUsuario {
 			preparedStatementModificar.setString(2, administradorDeConexionMariaDB.getLlave());
 			preparedStatementModificar.setString(3, usuario.getCorreo());
 
+			logger.debug(preparedStatementModificar);
+			logger.info(usuario);
 			return preparedStatementModificar.executeUpdate() == 1;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 
 		return false;
@@ -111,9 +125,11 @@ public class UsuarioImp implements IUsuario {
 			}
 			preparedStatementEliminar.setString(1, usuario.getCorreo());
 
+			logger.debug(preparedStatementEliminar);
+			logger.info(usuario);
 			return preparedStatementEliminar.executeUpdate() == 1;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 		return false;
 	}
@@ -131,7 +147,7 @@ public class UsuarioImp implements IUsuario {
 
 			ResultSet resultSet = preparedStatementListar.executeQuery();
 
-			if (resultSet.next()) {
+			while (resultSet.next()) {
 				Usuario usuario = new Usuario();
 				usuario.setCorreo(resultSet.getString("correo"));
 				usuario.setClave(resultSet.getString("clave"));
@@ -142,8 +158,11 @@ public class UsuarioImp implements IUsuario {
 				usuarios.add(usuario);
 			}
 
+			logger.debug(preparedStatementListar);
+			logger.info(usuarios);
+
 		} catch (SQLException | PatronExcepcion e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 
 		return usuarios;
@@ -159,11 +178,10 @@ public class UsuarioImp implements IUsuario {
 			if (actualizarFechaUltimoAcceso(usuario)) {
 				usuario = buscarPorID(correo);
 			}
-			return usuario;
 		} else if (null != usuario && !usuario.getClave().equals(clave)) {
 			actualizarIntentoFallido(usuario);
 		}
-		return null;
+		return usuario;
 	}
 
 	@Override
@@ -178,9 +196,12 @@ public class UsuarioImp implements IUsuario {
 			preparedStatementActualizarFechaUltimoAcceso.setByte(2, (byte) 0);
 			preparedStatementActualizarFechaUltimoAcceso.setString(3, usuario.getCorreo());
 
+			logger.debug(preparedStatementActualizarFechaUltimoAcceso);
+			logger.info(usuario);
+
 			return preparedStatementActualizarFechaUltimoAcceso.executeUpdate() == 1;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 
 		return false;
@@ -196,9 +217,12 @@ public class UsuarioImp implements IUsuario {
 			}
 			preparedStatementActualizarIntentoFallido.setString(1, usuario.getCorreo());
 
+			logger.debug(preparedStatementActualizarIntentoFallido);
+			logger.info(usuario);
+
 			return preparedStatementActualizarIntentoFallido.executeUpdate() == 1;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 		return false;
 	}
@@ -206,7 +230,7 @@ public class UsuarioImp implements IUsuario {
 	public static void main(String[] args) {
 		Usuario usuario;
 		try {
-			usuario = new Usuario("user3@educacionit.com", "User3.1234", Fechas.getLocalDate("1999-06-01"),
+			usuario = new Usuario("user5@educacionit.com", "User5.1234", Fechas.getLocalDate("1999-06-01"),
 					LocalDateTime.now(), (byte) 0);
 
 			System.out.println(usuario);
@@ -215,11 +239,13 @@ public class UsuarioImp implements IUsuario {
 
 			iUsuario.insertar(usuario);
 
-			System.out.println(iUsuario.buscarPorID("user1@educacionit.com"));// true
-			System.out.println(iUsuario.buscarPorID("user1@edcacionit.com"));
-			System.out.println(iUsuario.buscarPorCorreoClave("user1@educacionit.com", "1234"));
-			System.out.println(iUsuario.buscarPorCorreoClave("user1@educaconit.com", "1234"));
-			System.out.println(iUsuario.buscarPorCorreoClave("user1@educacionit.com", "User1.1234"));
+			iUsuario.buscarPorID("user1@educacionit.com");// true
+			iUsuario.buscarPorID("user1@edcacionit.com");
+			iUsuario.buscarPorCorreoClave("user1@educacionit.com", "1234");
+			iUsuario.buscarPorCorreoClave("user1@educaconit.com", "1234");
+			iUsuario.buscarPorCorreoClave("user1@educacionit.com", "User1.1234");
+
+			System.out.println(iUsuario.listar());
 		} catch (PatronExcepcion e) {
 			e.printStackTrace();
 		}
