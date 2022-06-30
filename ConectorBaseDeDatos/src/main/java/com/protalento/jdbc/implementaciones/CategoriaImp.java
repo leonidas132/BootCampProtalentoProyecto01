@@ -6,11 +6,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.protalento.entidades.Categoria;
 import com.protalento.jdbc.AdministradorDeConexionMariaDB;
 import com.protalento.jdbc.interfaces.ICategoria;
 
 public class CategoriaImp implements ICategoria {
+
+	private static Logger logger = LogManager.getLogger();
 	private PreparedStatement preparedStatementBuscarPorID;
 	private PreparedStatement preparedStatementInsertar;
 	private PreparedStatement preparedStatementEliminar;
@@ -39,8 +44,11 @@ public class CategoriaImp implements ICategoria {
 				categoria.setDescripcion(resultSet.getString("descripcion"));
 			}
 
+			logger.debug(preparedStatementBuscarPorID);
+			logger.info(categoria);
+
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 
 		return categoria;
@@ -70,8 +78,11 @@ public class CategoriaImp implements ICategoria {
 				}
 			}
 
+			logger.debug(preparedStatementInsertar);
+			logger.info(categoria);
+
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 
 		return inserto;
@@ -87,9 +98,12 @@ public class CategoriaImp implements ICategoria {
 			preparedStatementModificar.setString(1, categoria.getDescripcion());
 			preparedStatementModificar.setLong(2, categoria.getId());
 
+			logger.debug(preparedStatementModificar);
+			logger.info(categoria);
+
 			return preparedStatementModificar.executeUpdate() == 1;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 
 		return false;
@@ -104,9 +118,12 @@ public class CategoriaImp implements ICategoria {
 			}
 			preparedStatementEliminar.setLong(1, categoria.getId());
 
+			logger.debug(preparedStatementEliminar);
+			logger.info(categoria);
+
 			return preparedStatementEliminar.executeUpdate() == 1;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 		return false;
 	}
@@ -122,7 +139,7 @@ public class CategoriaImp implements ICategoria {
 			}
 
 			ResultSet resultSet = preparedStatementListar.executeQuery();
-			if (resultSet.next()) {
+			while (resultSet.next()) {
 				Categoria categoria = new Categoria();
 				categoria.setId(resultSet.getLong("id"));
 				categoria.setDescripcion(resultSet.getString("descripcion"));
@@ -130,8 +147,11 @@ public class CategoriaImp implements ICategoria {
 				categorias.add(categoria);
 			}
 
+			logger.debug(preparedStatementListar);
+			logger.info(categorias);
+
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 
 		return categorias;

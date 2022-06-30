@@ -1,0 +1,1 @@
+2022-06-28 22:19:35.441 ERROR  -com.protalento.jdbc.implementaciones.UsuarioImp.insertar(UsuarioImp.java:92) - java.sql.SQLIntegrityConstraintViolationException: (conn=44) Duplicate entry 'user5@educacionit.com' for key 'PRIMARY'
