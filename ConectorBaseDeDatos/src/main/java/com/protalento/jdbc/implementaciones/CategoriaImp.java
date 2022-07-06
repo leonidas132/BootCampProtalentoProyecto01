@@ -27,7 +27,6 @@ public class CategoriaImp implements ICategoria {
 		administradorDeConexionMariaDB = new AdministradorDeConexionMariaDB();
 	}
 
-	@Override
 	public Categoria buscarPorID(Long id) {
 		Categoria categoria = null;
 		String sql = "select id, descripcion from categorias where id = ?";
@@ -54,7 +53,6 @@ public class CategoriaImp implements ICategoria {
 		return categoria;
 	}
 
-	@Override
 	public boolean insertar(Categoria categoria) {
 		boolean inserto = false;
 		String sql = "insert into categorias (descripcion) values (?)";
@@ -88,7 +86,6 @@ public class CategoriaImp implements ICategoria {
 		return inserto;
 	}
 
-	@Override
 	public boolean modificar(Categoria categoria) {
 		String sql = "update categorias set descripcion = ? where id = ?";
 		try {
@@ -109,7 +106,6 @@ public class CategoriaImp implements ICategoria {
 		return false;
 	}
 
-	@Override
 	public boolean eliminar(Categoria categoria) {
 		String sql = "delete from categorias where id = ?";
 		try {
@@ -128,7 +124,6 @@ public class CategoriaImp implements ICategoria {
 		return false;
 	}
 
-	@Override
 	public List<Categoria> listar() {
 
 		List<Categoria> categorias = new ArrayList<>();
@@ -155,6 +150,19 @@ public class CategoriaImp implements ICategoria {
 		}
 
 		return categorias;
+	}
+
+	public boolean guardar(Categoria categoria) {
+		Categoria categoriaAux = buscarPorID(categoria.getId());
+
+		if (categoriaAux == null) {
+			return insertar(categoria);
+		}
+		return modificar(categoria);
+	}
+
+	public static void main(String[] args) {
+		System.out.println(new CategoriaImp().listar());
 	}
 
 }

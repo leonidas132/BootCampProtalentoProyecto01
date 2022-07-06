@@ -11,5 +11,14 @@ public interface DAOGenerico<E, K> {
 
 	boolean eliminar(E e);
 
+	/**
+	 * Este metodo dtendra la logica de verificar si existe el objeto lo modifica
+	 * sino lo inserta aprovechando los metodos ya existentes
+	 * 
+	 * @param e
+	 * @return
+	 */
+	boolean guardar(E e);
+
 	List<E> listar();
 }

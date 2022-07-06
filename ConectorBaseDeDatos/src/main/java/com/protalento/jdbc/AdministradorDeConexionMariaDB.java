@@ -14,10 +14,15 @@ public final class AdministradorDeConexionMariaDB {
 
 	private static final InputStream PATH = Thread.currentThread().getContextClassLoader()
 			.getResourceAsStream("basededatos.properties");
-	private Properties propiedades;
+	private static Properties propiedades = new Properties();
 
 	public AdministradorDeConexionMariaDB() {
-		setPropiedades(new Properties());
+		try {
+			propiedades.load(PATH);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public Connection getConexion() {
@@ -43,19 +48,6 @@ public final class AdministradorDeConexionMariaDB {
 
 	public String getLlave() {
 		return EsquemaBase64.getCadena(propiedades.getProperty("db_llave"), BASE_64.DECODIFICAR);
-	}
-
-	public Properties getPropiedades() {
-		return propiedades;
-	}
-
-	public void setPropiedades(Properties propiedades) {
-		this.propiedades = propiedades;
-		try {
-			this.propiedades.load(PATH);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 }

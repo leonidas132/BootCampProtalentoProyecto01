@@ -10,12 +10,21 @@
 <head>
 <link rel="stylesheet" href="css/botones.css">
 <meta charset="ISO-8859-1">
-<title>Inicio (Protalento - EducacionIT)</title>
+<title>Categorias (Protalento - EducacionIT)</title>
 </head>
 <body>
 
 	<%
 	Alertas alerta = (Alertas) request.getAttribute("alerta");
+
+	String id = request.getParameter("id");
+	Categoria categoria = null;
+	CategoriaImp categoriaImp = null;
+
+	if (id != null) {
+		categoriaImp = new CategoriaImp();
+		categoria = categoriaImp.buscarPorID(Long.valueOf(id));
+	}
 
 	Usuario usuario = (Usuario) session.getAttribute("usuario");
 	if (null == usuario) {
@@ -37,8 +46,8 @@
 		</header>
 	</div>
 	<div>
-		<a href="categoria.jsp">Agregar Categoria</a> <br> <a
-			onclick="cerrarSesion()">Cerrar Sesion</a>
+		<a href="index.jsp">Inicio</a> <br> <a onclick="cerrarSesion()">Cerrar
+			Sesion</a>
 	</div>
 
 	<div>
@@ -47,40 +56,21 @@
 
 			<h2>Categorias</h2>
 
-			<%
-			CategoriaImp categoriaImp = new CategoriaImp();
-			List<Categoria> categorias = categoriaImp.listar();
-			%>
 
 			<div>
-				<table>
-					<tr>
-						<th>ID</th>
-						<th>Descripcion</th>
-						<th>Accion</th>
-					</tr>
+				<form action="categorias" method="post">
 
-					<%
-					for (Categoria categoria : categorias) {
-					%>
-					<tr>
-						<td><%=categoria.getId()%></td>
-						<td><%=categoria.getDescripcion()%></td>
-						<td>
-							<button class="warning" onclick="editar('categoria.jsp',<%=categoria.getId()%>)">Editar</button>
-							<button class="danger"
-								onclick="eliminar('categorias',<%=("'" + categoria.getId() + "','" + categoria + "'")%>)">Eliminar</button>
-						</td>
-					</tr>
+					<input type="hidden" id="id" name="id"
+						value="<%=categoria != null ? categoria.getId() : 0%>"> <label
+						for="descripcion">Descripcion</label> <input type="text"
+						id="descripcion" name="descripcion"
+						placeholder="Descripcion Categoria" required
+						<%=categoria != null ? "value=\"" + categoria.getDescripcion() + "\"" : 0%>>
+					<button class="success" type="submit"><%=categoria != null ? "Modificar" : "Agregar"%></button>
+					<button class="warning" type="reset">Limpiar</button>
 
-					<%
-					}
-					%>
-
-				</table>
-
+				</form>
 			</div>
-
 		</section>
 
 	</div>

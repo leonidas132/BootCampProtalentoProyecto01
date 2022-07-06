@@ -35,7 +35,6 @@ public class UsuarioImp implements IUsuario {
 		administradorDeConexionMariaDB = new AdministradorDeConexionMariaDB();
 	}
 
-	@Override
 	public Usuario buscarPorID(String correo) {
 		Usuario usuario = null;
 		String sql = "select AES_DECRYPT(clave,?) as clave, fechaCreacion, fechaUltimoAcceso, intentosFallidos  from Usuarios where correo = ?";
@@ -69,7 +68,6 @@ public class UsuarioImp implements IUsuario {
 		return usuario;
 	}
 
-	@Override
 	public boolean insertar(Usuario usuario) {
 		String sql = "insert into Usuarios (correo,clave,fechaCreacion,FechaUltimoAcceso) values (?,AES_ENCRYPT(?,?),?,?)";
 		try {
@@ -94,7 +92,6 @@ public class UsuarioImp implements IUsuario {
 		return false;
 	}
 
-	@Override
 	public boolean modificar(Usuario usuario) {
 		String sql = "update usuarios set clave = AES_ENCRYPT(?,?) where correo = ?";
 		try {
@@ -116,7 +113,6 @@ public class UsuarioImp implements IUsuario {
 		return false;
 	}
 
-	@Override
 	public boolean eliminar(Usuario usuario) {
 		String sql = "delete from usuarios where correo = ?";
 		try {
@@ -134,7 +130,6 @@ public class UsuarioImp implements IUsuario {
 		return false;
 	}
 
-	@Override
 	public List<Usuario> listar() {
 		List<Usuario> usuarios = new ArrayList<>();
 		String sql = "select correo, AES_DECRYPT(clave,?) as clave, fechaCreacion, fechaUltimoAcceso, intentosFallidos  from Usuarios";
@@ -168,23 +163,19 @@ public class UsuarioImp implements IUsuario {
 		return usuarios;
 	}
 
-	@Override
 	public Usuario buscarPorCorreoClave(String correo, String clave) {
 
 		Usuario usuario = buscarPorID(correo);
 
 		if (null != usuario && usuario.getClave().equals(clave)) {
-			// nos aseguramos que actualizo la informacion
-			if (actualizarFechaUltimoAcceso(usuario)) {
-				usuario = buscarPorID(correo);
-			}
+			actualizarFechaUltimoAcceso(usuario);
 		} else if (null != usuario && !usuario.getClave().equals(clave)) {
 			actualizarIntentoFallido(usuario);
 		}
+		usuario = buscarPorID(correo);
 		return usuario;
 	}
 
-	@Override
 	public boolean actualizarFechaUltimoAcceso(Usuario usuario) {
 		String sql = "update usuarios set fechaUltimoAcceso = ?, intentosFallidos = ? where correo = ?";
 		try {
@@ -207,7 +198,6 @@ public class UsuarioImp implements IUsuario {
 		return false;
 	}
 
-	@Override
 	public boolean actualizarIntentoFallido(Usuario usuario) {
 		String sql = "update usuarios set intentosFallidos = (intentosFallidos + 1) where correo = ? ";
 		try {
@@ -227,6 +217,14 @@ public class UsuarioImp implements IUsuario {
 		return false;
 	}
 
+	public boolean guardar(Usuario usuario) {
+		Usuario usuarioAux = buscarPorID(usuario.getCorreo());
+		if (usuarioAux == null) {
+			return insertar(usuarioAux);
+		}
+		return modificar(usuario);
+	}
+
 	public static void main(String[] args) {
 		Usuario usuario;
 		try {
@@ -235,7 +233,7 @@ public class UsuarioImp implements IUsuario {
 
 			System.out.println(usuario);
 
-			IUsuario iUsuario = new UsuarioImp();
+			UsuarioImp iUsuario = new UsuarioImp();
 
 			iUsuario.insertar(usuario);
 
@@ -251,4 +249,5 @@ public class UsuarioImp implements IUsuario {
 		}
 
 	}
+
 }
