@@ -50,6 +50,8 @@ public class ValidarSesion extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		final String VERSION = System.getProperty("version");
+
 		String correo = request.getParameter("correo");
 		String clave = request.getParameter("clave");
 		String pagina = "login.jsp";
@@ -68,6 +70,7 @@ public class ValidarSesion extends HttpServlet {
 			} else {
 				sesion = request.getSession();
 				sesion.setAttribute("usuario", usuario);
+				sesion.setAttribute("VERSION", VERSION);
 				pagina = "index.jsp";
 			}
 		} else {

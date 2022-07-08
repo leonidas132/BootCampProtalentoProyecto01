@@ -8,38 +8,47 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="icon" href="imagenes/protalento.ico" />
 <link rel="stylesheet" href="css/botones.css">
+<link rel="stylesheet" href="css/alert.css">
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/tabla.css">
+
 <meta charset="ISO-8859-1">
 <title>Inicio (Protalento - EducacionIT)</title>
 </head>
 <body>
 
 	<%
-	Alertas alerta = (Alertas) request.getAttribute("alerta");
-
 	Usuario usuario = (Usuario) session.getAttribute("usuario");
 	if (null == usuario) {
 		response.sendRedirect("login.jsp");
 	} else {
+
+		Alertas alerta = (Alertas) request.getAttribute("alerta");
+		if (!(null == alerta)) {
+	%>
+	<div id="alert">
+		<a class="alert <%=alerta.getClaseCSS()%>" href="#alert"><%=alerta.getMensaje()%></a>
+	</div>
+
+	<%
+	}
 	%>
 
 	<div>
-		<%=(null == alerta ? "" : alerta.getMensaje())%>
-	</div>
-
-	<div>
 		<header>
-			<h1>CRUD Protalento</h1>
+			<h1>CRUD Protalento - <%=session.getAttribute("VERSION") %></h1>
 			<h2>
 				Bienvenido
 				<%=usuario.getCorreo()%></h2>
 			<!-- Imagen -->
 		</header>
 	</div>
-	<div>
-		<a href="categoria.jsp">Agregar Categoria</a> <br> <a
-			onclick="cerrarSesion()">Cerrar Sesion</a>
-	</div>
+	<nav>
+		<a href="categoria.jsp">Agregar Categoria</a> <a
+			style="float: right;" onclick="cerrarSesion()">Cerrar Sesion</a>
+	</nav>
 
 	<div>
 
@@ -67,7 +76,8 @@
 						<td><%=categoria.getId()%></td>
 						<td><%=categoria.getDescripcion()%></td>
 						<td>
-							<button class="warning" onclick="editar('categoria.jsp',<%=categoria.getId()%>)">Editar</button>
+							<button class="warning"
+								onclick="editar('categoria.jsp',<%=categoria.getId()%>)">Editar</button>
 							<button class="danger"
 								onclick="eliminar('categorias',<%=("'" + categoria.getId() + "','" + categoria + "'")%>)">Eliminar</button>
 						</td>

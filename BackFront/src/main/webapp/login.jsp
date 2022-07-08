@@ -6,10 +6,13 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
+<link rel="icon" href="imagenes/protalento.ico">
 <link rel="stylesheet" href="css/formulario.css">
 <link rel="stylesheet" href="css/botones.css">
+<link rel="stylesheet" href="css/alert.css">
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+
 <title>Login (Protalento - EducacionIT)</title>
 </head>
 <body>
@@ -21,11 +24,15 @@
 		response.sendRedirect("index.jsp");
 
 	Alertas alerta = (Alertas) request.getAttribute("alerta");
+	if (!(null == alerta)) {
 	%>
-	<div>
-		<%=(null == alerta ? "" : alerta.getMensaje())%>
-
+	<div id="alert">
+		<a class="alert <%=alerta.getClaseCSS()%>" href="#alert"><%=alerta.getMensaje()%></a>
 	</div>
+
+	<%
+	}
+	%>
 	<div>
 		<form action="sesion" method="post">
 			<label for="correo">Correo:</label> <input type="email" id="correo"

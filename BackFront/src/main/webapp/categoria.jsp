@@ -8,8 +8,14 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="icon" href="imagenes/protalento.ico" />
 <link rel="stylesheet" href="css/botones.css">
+<link rel="stylesheet" href="css/alert.css">
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/formulario.css">
+
 <meta charset="ISO-8859-1">
+
 <title>Categorias (Protalento - EducacionIT)</title>
 </head>
 <body>
@@ -38,17 +44,17 @@
 
 	<div>
 		<header>
-			<h1>CRUD Protalento</h1>
+			<h1>CRUD Protalento - <%=session.getAttribute("VERSION") %></h1>
 			<h2>
 				Bienvenido
 				<%=usuario.getCorreo()%></h2>
 			<!-- Imagen -->
 		</header>
 	</div>
-	<div>
-		<a href="index.jsp">Inicio</a> <br> <a onclick="cerrarSesion()">Cerrar
-			Sesion</a>
-	</div>
+	<nav>
+		<a href="index.jsp">Inicio</a> <a
+			style="float: right;" onclick="cerrarSesion()">Cerrar Sesion</a>
+	</nav>
 
 	<div>
 
