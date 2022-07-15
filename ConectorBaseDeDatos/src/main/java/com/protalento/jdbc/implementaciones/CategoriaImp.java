@@ -24,7 +24,7 @@ public class CategoriaImp implements ICategoria {
 	private AdministradorDeConexionMariaDB administradorDeConexionMariaDB;
 
 	public CategoriaImp() {
-		administradorDeConexionMariaDB = new AdministradorDeConexionMariaDB();
+		administradorDeConexionMariaDB = AdministradorDeConexionMariaDB.getInstancia();
 	}
 
 	public Categoria buscarPorID(Long id) {

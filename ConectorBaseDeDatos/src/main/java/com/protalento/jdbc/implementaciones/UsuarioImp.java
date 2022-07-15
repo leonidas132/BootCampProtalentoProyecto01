@@ -32,7 +32,7 @@ public class UsuarioImp implements IUsuario {
 	private AdministradorDeConexionMariaDB administradorDeConexionMariaDB;
 
 	public UsuarioImp() {
-		administradorDeConexionMariaDB = new AdministradorDeConexionMariaDB();
+		administradorDeConexionMariaDB = AdministradorDeConexionMariaDB.getInstancia();
 	}
 
 	public Usuario buscarPorID(String correo) {
@@ -226,8 +226,23 @@ public class UsuarioImp implements IUsuario {
 	}
 
 	public static void main(String[] args) {
+		
+		try {
+			AdministradorDeConexionMariaDB	admin1 = AdministradorDeConexionMariaDB.getInstancia();
+			AdministradorDeConexionMariaDB	admin2 = AdministradorDeConexionMariaDB.getInstancia();
+			
+			System.out.println(admin1==admin2);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		/*
+		
 		Usuario usuario;
 		try {
+			
+			
 			usuario = new Usuario("user5@educacionit.com", "User5.1234", Fechas.getLocalDate("1999-06-01"),
 					LocalDateTime.now(), (byte) 0);
 
@@ -247,7 +262,7 @@ public class UsuarioImp implements IUsuario {
 		} catch (PatronExcepcion e) {
 			e.printStackTrace();
 		}
-
+*/
 	}
 
 }

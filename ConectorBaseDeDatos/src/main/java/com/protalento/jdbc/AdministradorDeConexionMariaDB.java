@@ -7,33 +7,44 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.protalento.enumerados.BASE_64;
 import com.protalento.utilidades.EsquemaBase64;
 
+// Singleton
 public final class AdministradorDeConexionMariaDB {
+	private static Logger logger = LogManager.getLogger();
+	private String llave;
+	private Connection conexion;
+	private InputStream directorioPropiedades;
+	private Properties propiedades;
+	private static AdministradorDeConexionMariaDB administradorDeConexionMariaDB;
 
-	private static final InputStream PATH = Thread.currentThread().getContextClassLoader()
-			.getResourceAsStream("basededatos.properties");
-	private static Properties propiedades = new Properties();
-
-	public AdministradorDeConexionMariaDB() {
-		try {
-			propiedades.load(PATH);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	private AdministradorDeConexionMariaDB() {
+		setConexion();
 	}
 
-	public Connection getConexion() {
-		Connection conexion = null;
+	public static AdministradorDeConexionMariaDB getInstancia() {
+
+		if (administradorDeConexionMariaDB == null) {
+			administradorDeConexionMariaDB = new AdministradorDeConexionMariaDB();
+			logger.info("Se crea la intancia del administradorDeConexionMariaDB");
+		}
+
+		return administradorDeConexionMariaDB;
+	}
+
+	private void setConexion() {
+		setPropiedades();
+		setLlave(EsquemaBase64.getCadena(propiedades.getProperty("db_llave"), BASE_64.DECODIFICAR));
 		try {
 
 			String DRIVER = propiedades.getProperty("db_driver");
 			String URL = propiedades.getProperty("db_url");
 			String USUARIO = propiedades.getProperty("db_usuario");
 			String CLAVE = propiedades.getProperty("db_clave");
-
 			Class.forName(DRIVER);
 			conexion = DriverManager.getConnection(URL, USUARIO, CLAVE);
 
@@ -43,11 +54,30 @@ public final class AdministradorDeConexionMariaDB {
 			e.printStackTrace();
 		}
 
+	}
+
+	private void setPropiedades() {
+		propiedades = new Properties();
+		directorioPropiedades = Thread.currentThread().getContextClassLoader()
+				.getResourceAsStream("basededatos.properties");
+		try {
+			propiedades.load(directorioPropiedades);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public Connection getConexion() {
 		return conexion;
 	}
 
+	private void setLlave(String llave) {
+		this.llave = llave;
+	}
+
 	public String getLlave() {
-		return EsquemaBase64.getCadena(propiedades.getProperty("db_llave"), BASE_64.DECODIFICAR);
+		return llave;
 	}
 
 }

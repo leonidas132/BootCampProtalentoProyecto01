@@ -3,27 +3,27 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>BackFront</artifactId>
+	<artifactId>Backend</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
+
+	<name>Backend Maven Webapp</name>
+	<!-- FIXME change it to the project's website -->
+	<url>http://www.example.com</url>
 
 
 	<parent>
 		<groupId>com.protalento</groupId>
 		<artifactId>Parent</artifactId>
-		<version>1.0.3-SNAPSHOT</version>
+		<version>1.0.2-SNAPSHOT</version>
 		<relativePath>../Parent</relativePath>
 	</parent>
-
-	<name>BackFront Maven Webapp</name>
-	<!-- FIXME change it to the project's website -->
-	<url>http://www.example.com</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-
-
+		<jerseyVersion>3.0.5</jerseyVersion>
 	</properties>
 
 	<dependencies>
@@ -32,6 +32,12 @@
 			<artifactId>junit</artifactId>
 			<version>4.11</version>
 			<scope>test</scope>
+		</dependency>
+		<!-- https://github.com/orobleto/commons-utilities-->
+		<dependency>
+			<groupId>com.octaviorobleto.commons</groupId>
+			<artifactId>commons-utilities</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
@@ -42,18 +48,36 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.glassfish.jersey.containers/jersey-container-servlet -->
+		<dependency>
+			<groupId>org.glassfish.jersey.containers</groupId>
+			<artifactId>jersey-container-servlet</artifactId>
+			<version>${jerseyVersion}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.glassfish.jersey.inject/jersey-hk2 -->
+		<dependency>
+			<groupId>org.glassfish.jersey.inject</groupId>
+			<artifactId>jersey-hk2</artifactId>
+			<version>${jerseyVersion}</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.glassfish.jersey.media/jersey-media-json-jackson -->
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-json-jackson</artifactId>
+			<version>${jerseyVersion}</version>
+		</dependency>
+
 
 		<dependency>
 			<groupId>com.protalento</groupId>
 			<artifactId>ConectorBaseDeDatos</artifactId>
 			<version>${version}</version>
 		</dependency>
-
-
 	</dependencies>
 
 	<build>
-		<finalName>BackFront</finalName>
+		<finalName>Backend</finalName>
 		<pluginManagement>
 			<!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
 			<plugins>
