@@ -226,24 +226,10 @@ public class UsuarioImp implements IUsuario {
 	}
 
 	public static void main(String[] args) {
-		
-		try {
-			AdministradorDeConexionMariaDB	admin1 = AdministradorDeConexionMariaDB.getInstancia();
-			AdministradorDeConexionMariaDB	admin2 = AdministradorDeConexionMariaDB.getInstancia();
-			
-			System.out.println(admin1==admin2);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		/*
-		
+
 		Usuario usuario;
 		try {
-			
-			
-			usuario = new Usuario("user5@educacionit.com", "User5.1234", Fechas.getLocalDate("1999-06-01"),
+			usuario = new Usuario("user2@educacionit.com", "User2.1234", Fechas.getLocalDate("1999-06-01"),
 					LocalDateTime.now(), (byte) 0);
 
 			System.out.println(usuario);
@@ -252,17 +238,34 @@ public class UsuarioImp implements IUsuario {
 
 			iUsuario.insertar(usuario);
 
-			iUsuario.buscarPorID("user1@educacionit.com");// true
-			iUsuario.buscarPorID("user1@edcacionit.com");
-			iUsuario.buscarPorCorreoClave("user1@educacionit.com", "1234");
-			iUsuario.buscarPorCorreoClave("user1@educaconit.com", "1234");
-			iUsuario.buscarPorCorreoClave("user1@educacionit.com", "User1.1234");
-
-			System.out.println(iUsuario.listar());
-		} catch (PatronExcepcion e) {
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-*/
+
+		/*
+		 * 
+		 * Usuario usuario; try {
+		 * 
+		 * 
+		 * usuario = new Usuario("user5@educacionit.com", "User5.1234",
+		 * Fechas.getLocalDate("1999-06-01"), LocalDateTime.now(), (byte) 0);
+		 * 
+		 * System.out.println(usuario);
+		 * 
+		 * UsuarioImp iUsuario = new UsuarioImp();
+		 * 
+		 * iUsuario.insertar(usuario);
+		 * 
+		 * iUsuario.buscarPorID("user1@educacionit.com");// true
+		 * iUsuario.buscarPorID("user1@edcacionit.com");
+		 * iUsuario.buscarPorCorreoClave("user1@educacionit.com", "1234");
+		 * iUsuario.buscarPorCorreoClave("user1@educaconit.com", "1234");
+		 * iUsuario.buscarPorCorreoClave("user1@educacionit.com", "User1.1234");
+		 * 
+		 * System.out.println(iUsuario.listar()); } catch (PatronExcepcion e) {
+		 * e.printStackTrace(); }
+		 */
 	}
 
 }

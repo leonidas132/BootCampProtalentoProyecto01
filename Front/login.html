@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+
+    <label for="correo">Correo:</label>
+    <input type="email" id="correo" name="correo" placeholder="usuario@dominio.ext" required
+        value="user2@educacionit.com">
+    <label for="clave">Clave:</label>
+    <input type="password" id="clave" name="clave" placeholder="tu clave..." required value="User2.1234">
+    <button onclick="enviarFormulario()">Enviar</button>
+
+
+
+
+
+    <script>
+        const URL = "http://localhost:8080/Backend/api/sesion";
+        let usuarioDTO = {};
+        let urlRedireccion = "";
+
+
+        function enviarFormulario() {
+            const correo = document.getElementById("correo");
+            const clave = document.getElementById("clave");
+            const usuario = {
+                correo: correo.value,
+                clave: clave.value
+            }
+            const requestInfo = {
+                method: "POST",
+                body: JSON.stringify(usuario),
+                headers: {
+                    "content-type": "application/json"
+                }
+            }
+
+            fetch(URL + "/iniciar", requestInfo)
+                .then(response => response.json())
+                .then(jsonResponse => {
+                    usuarioDTO = jsonResponse.credenciales;
+                    urlRedireccion = jsonResponse.url;
+                    window.location.href = urlRedireccion;
+                    return usuarioDTO;
+                }
+                )
+                .catch(error => console.log(error))
+                .finally(e => console.log(usuarioDTO))
+        }
+
+
+        function redireccion(usuarioDTOaux) {
+            const requestInfo = {
+                method: "POST",
+                headers: {
+                    "content-type": "application/json",
+                    "User-ID": usuarioDTOaux.correo,
+                    "Session-ID": usuarioDTOaux.uuid
+                }
+            }
+
+            fetch(URL + "/redireccion2", requestInfo)
+                .then(response => console.log(response))
+                .catch(error => console.log(error))
+                .finally(e => console.log(requestInfo));
+        }
+
+
+    </script>
+</body>
+
+</html>
